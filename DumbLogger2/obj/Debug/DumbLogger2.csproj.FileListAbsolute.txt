@@ -1,0 +1,4 @@
+E:\DumbLogger\DumbLogger2\bin\Debug\DumbLogger2.dll
+E:\DumbLogger\DumbLogger2\bin\Debug\DumbLogger2.pdb
+E:\DumbLogger\DumbLogger2\obj\Debug\DumbLogger2.dll
+E:\DumbLogger\DumbLogger2\obj\Debug\DumbLogger2.pdb
