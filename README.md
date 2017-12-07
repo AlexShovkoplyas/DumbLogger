@@ -12,10 +12,10 @@ Contain classes of main functionality.
 
 ClassName | Description
 --------- | -----------
-LogWriter | Abstract class pointed main functionality of logger 
-LogParameters | Specifies all parameters that can be logged.
-LogManager | Manage loggers creation.
-LogConfigManager | Manage config file were settings for all loggers are stored.  
+`LogWriter` | Abstract class pointed main functionality of logger 
+`LogParameters` | Specifies all parameters that can be logged.
+`LogManager` | Manage loggers creation.
+`LogConfigManager` | Manage config file were settings for all loggers are stored.  
 
 `DumbLogger.Configuration`
 Supports configuring of loggers.
