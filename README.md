@@ -28,3 +28,7 @@ Class name | Description
 'LogWriterJson' |
 
 ##How to start:
+
+https://stackoverflow.com/questions/1179816/best-practices-for-serializing-objects-to-a-custom-string-format-for-use-in-an-o
+
+https://msdn.microsoft.com/en-us/library/system.iformatprovider.aspx
