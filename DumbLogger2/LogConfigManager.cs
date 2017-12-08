@@ -3,6 +3,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
 using DumbLogger.Configuration;
+using System.Text;
 
 namespace DumbLogger
 {
@@ -33,6 +34,9 @@ namespace DumbLogger
                 XmlWriter xmlWriter = XmlWriter.Create(fileStream, settings);
 
                 serializer.Serialize(xmlWriter, logConfig, emptyNs);
+
+                byte[] newline = Encoding.ASCII.GetBytes(Environment.NewLine);
+                fileStream.Write(newline, 0, newline.Length);
 
                 Console.WriteLine($"New confidugation : {logConfig.LogName} was added to config file {configFileName}");
 

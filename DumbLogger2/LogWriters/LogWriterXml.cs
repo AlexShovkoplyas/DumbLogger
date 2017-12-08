@@ -19,14 +19,14 @@ namespace DumbLogger.LogWriters
             var settings = new XmlWriterSettings() { OmitXmlDeclaration = true };
             var emptyNs = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
 
-            using (Stream fileStream = new FileStream(Config.LogDirectory + @"\" + Config.logFileName, FileMode.Append))
+            using (Stream fileStream = new FileStream(logFilePath, FileMode.Append))
             {
                 XmlWriter xmlWriter = XmlWriter.Create(fileStream, settings);
 
-                serializer.Serialize(xmlWriter, logInfo, emptyNs);
+                serializer.Serialize(  xmlWriter, logInfo, emptyNs);
                 xmlWriter.Dispose();
 
-                byte[] newline = Encoding.ASCII.GetBytes(Environment.NewLine);
+                byte[] newline = Encoding.Default.GetBytes(Environment.NewLine);
                 fileStream.Write(newline, 0, newline.Length);
                 
             }            

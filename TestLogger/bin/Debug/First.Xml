@@ -1,2 +1,0 @@
-﻿<LogParameters><Message>First message</Message><LogLevel>Debug</LogLevel><Error>System.Exception: exception_message</Error><Application>DumbLogger2</Application><ClassName>DumbLogger.LogWriters.LogWriterXml</ClassName><MethodPath>Debug</MethodPath></LogParameters>
-<LogParameters><Message>First message</Message><LogLevel>Error</LogLevel><Error>System.Exception: exception_message</Error><Application>DumbLogger2</Application><ClassName>DumbLogger.LogWriters.LogWriterXml</ClassName><MethodPath>Error</MethodPath></LogParameters>

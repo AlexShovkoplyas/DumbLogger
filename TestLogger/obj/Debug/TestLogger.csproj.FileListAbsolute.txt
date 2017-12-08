@@ -17,3 +17,8 @@ E:\DumbLogger\TestLogger\bin\Debug\DumbLogger2.pdb
 C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug\TestLogger.exe.config
 C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\obj\Debug\TestLogger.exe
 C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\obj\Debug\TestLogger.pdb
+C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\obj\Debug\TestLogger.csprojResolveAssemblyReference.cache
+C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug\TestLogger.exe
+C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug\TestLogger.pdb
+C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug\DumbLogger2.dll
+C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug\DumbLogger2.pdb

@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,15 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="LogConfigManager.cs" />
     <Compile Include="Configuration\Enums.cs" />
     <Compile Include="Configuration\LogConfig.cs" />
+    <Compile Include="LogReader.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="LogParameters.cs" />
     <Compile Include="LogWriters\LogWriterXml.cs" />
     <Compile Include="LogWriters\LogWriterJson.cs" />
     <Compile Include="LogWriters\LogWriterPlain.cs" />
+    <Compile Include="LogWriters\StreamSupport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

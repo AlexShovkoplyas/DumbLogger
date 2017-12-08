@@ -20,31 +20,28 @@ namespace DumbLogger.Configuration
             LogDirectory = Directory.GetCurrentDirectory();
             LogLevel = LogLevelEnum.Debug;
             LogFormat = LogFormatEnum.Xml;
-            logFileName = logName + "." + Enum.GetName(typeof(LogFormatEnum), LogFormat);
+            LogFileName = logName + "." + Enum.GetName(typeof(LogFormatEnum), LogFormat);
+        }
+
+        public LogConfig(string logName, string logDirectory = "", LogLevelEnum? logLevel = null, LogFormatEnum? logFormat = null, string logFileName = "")
+        {
+            LogName = logName;
+            LogDirectory = logDirectory == "" ? Directory.GetCurrentDirectory() : logDirectory;
+            LogLevel = logLevel.GetValueOrDefault(LogLevelEnum.Debug);
+            LogFormat = logFormat.GetValueOrDefault(LogFormatEnum.Xml); ;
+            LogFileName = logFileName == "" ? logName + "." + Enum.GetName(typeof(LogFormatEnum), LogFormat) : logFileName;
         }
 
         [XmlAttribute]
         public string LogName { get; set; }
 
-        public string LogDirectory
-        {
-            get;
-            set;
-        }
+        public string LogDirectory { get; set; }
 
-        public LogLevelEnum LogLevel
-        {
-            get;
-            set;
-        }
+        public LogLevelEnum LogLevel { get; set; }
 
-        public LogFormatEnum LogFormat
-        {
-            get;
-            set;
-        }
+        public LogFormatEnum LogFormat { get; set; }
 
-        public string logFileName { get; set; }
+        public string LogFileName { get; set; }
 
     }
 }

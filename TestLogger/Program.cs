@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DumbLogger;
 using DumbLogger.Configuration;
-
+using DumbLogger.LogReaders;
 
 namespace TestDumbLogger
 {
@@ -13,39 +13,27 @@ namespace TestDumbLogger
     {
         static void Main(string[] args)
         {
-            LogWriter firstLogger = LogManager.GetLogger("First");
 
-            LogConfig logConfig = new LogConfig()
-            {
-                LogName="ManualLogger",
-                LogDirectory= @"D:\Logger",
-                LogFormat = LogFormatEnum.Txt,
-                LogLevel = LogLevelEnum.Error,
-                logFileName = "MyFirstLogger.txt"
-            }
+            LogConfig logConfig = new LogConfig("ManualLogger", logFormat: LogFormatEnum.Json);
 
-            LogWriter manualLogger = LogManager.GetLogger(logConfig);
+            LogWriter jsonLogger = LogManager.GetLogger(logConfig);
 
-            try
-            {
+            jsonLogger.Debug("Message");
+            jsonLogger.Fatal("Message 2", new Exception("some error"), methodPath : "SuperApp");
 
-            }
-            catch (Exception e)
-            {
-                manualLogger.Debug("Log message");
-                throw;
-            }
-            manualLogger.Debug("Log message");
+            LogReaderJson reader = new LogReaderJson(logConfig);
 
-            
-            
+            reader.GetLogData();
 
+            //LogConfig xmlConfig = new LogConfig("ManualLogger2", logFormat: LogFormatEnum.Xml);
 
-            firstLogger.Debug("First message", new Exception("exception_message"));
-            
-            firstLogger.Error("First message", new Exception("exception_message"));
+            //LogWriter xmlLogger = LogManager.GetLogger(xmlConfig);
 
-            Console.ReadLine();
+            //jsonLogger.Debug("Message");
+            //jsonLogger.Fatal("Message 2", new Exception("some error"), methodPath: "SuperApp");
+
+            Console.ReadKey();
+
         }
 
     }

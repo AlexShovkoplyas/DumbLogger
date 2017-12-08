@@ -2,3 +2,8 @@ E:\DumbLogger\DumbLogger2\bin\Debug\DumbLogger2.dll
 E:\DumbLogger\DumbLogger2\bin\Debug\DumbLogger2.pdb
 E:\DumbLogger\DumbLogger2\obj\Debug\DumbLogger2.dll
 E:\DumbLogger\DumbLogger2\obj\Debug\DumbLogger2.pdb
+C:\Users\Alex\Source\Repos\DumbLogger\DumbLogger2\bin\Debug\DumbLogger2.dll
+C:\Users\Alex\Source\Repos\DumbLogger\DumbLogger2\bin\Debug\DumbLogger2.pdb
+C:\Users\Alex\Source\Repos\DumbLogger\DumbLogger2\obj\Debug\DumbLogger2.csprojResolveAssemblyReference.cache
+C:\Users\Alex\Source\Repos\DumbLogger\DumbLogger2\obj\Debug\DumbLogger2.dll
+C:\Users\Alex\Source\Repos\DumbLogger\DumbLogger2\obj\Debug\DumbLogger2.pdb
