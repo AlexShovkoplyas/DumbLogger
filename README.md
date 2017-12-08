@@ -22,18 +22,18 @@ Supports configuring of loggers.
 
 ClassName | Description
 --------- | -----------
-LogConfig | Specify configuration settings 
-LogLevelEnum | Variants of log inportance : Debug, Error, Fatal
-LogFormatEnum | Variants of log file : Txt,  Xml, Json
+`LogConfig` | Specify configuration settings 
+`LogLevelEnum` | Variants of log inportance : Debug, Error, Fatal
+`LogFormatEnum` | Variants of log file : Txt,  Xml, Json
 
 `DumbLogger.LogWriters`
 Contain classes that are inherited from class `LogWriter` and provide realisation of logging in different file format.
 
 ClassName | Description
 --------- | -----------
-LogWriterPlain | Provide functionality for file format `txt` 
-LogParametersXml | Provide functionality for file format `xml` 
-LogManagerJson | Provide functionality for file format `json` 
+`LogWriterPlain` | Provide functionality for file format `txt` 
+`LogParametersXml` | Provide functionality for file format `xml` 
+`LogManagerJson` | Provide functionality for file format `json` 
 
 ## Set up project : 
 Copy .dll  
@@ -61,7 +61,7 @@ LogConfig logConfig = new LogConfig()
 }
 LogWriter manualLogger = LogManager.GetLogger(logConfig);
 ```
-3 variants of log messages are available:
+3 variants of log messages are available: 
 
 ```
 manualLogger.Debug("Log message");
