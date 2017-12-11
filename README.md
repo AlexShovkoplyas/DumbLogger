@@ -57,7 +57,7 @@ Use namespaces `DumbLogger`, `DumbLogger.Configuration`
 
 Logging configuration is stored in file `logConfig.xml`. It can be created and populated programmatically or manually modifying config file.
 
-## How to start :
+## How to use library :
 
 You can create logger in 2 different ways : with default configuration or with manual configuration:
 ```
