@@ -1,4 +1,0 @@
-[
-{"Application":"","ClassName":"","Error":null,"LogLevel":0,"Message":"Message","MethodPath":""},
-{"Application":"","ClassName":"DumbLogger.LogWriters.LogWriterJson","Error":"System.Exception: some error","LogLevel":2,"Message":"Message 2","MethodPath":"SuperApp"}
-]

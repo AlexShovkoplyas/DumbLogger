@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System;
+﻿using System;
 using System.Runtime.Serialization.Json;
 using System.IO;
 using DumbLogger.Configuration;
@@ -7,34 +6,40 @@ using DumbLogger.Configuration;
 
 namespace DumbLogger.LogWriters
 {
-    public class LogWriterJson : LogWriter
+    internal class LogWriterJson : LogWriter
     {
         public LogWriterJson(LogConfig logConfig) : base(logConfig) { }
 
-        public override void LogWrite(LogParameters logInfo)
+        internal override void LogWrite(LogParameters logInfo)
         {
             var serializer = new DataContractJsonSerializer(typeof(LogParameters));
 
-            using (FileStream fileStream = new FileStream(logFilePath, FileMode.Open))
+            try
             {
-                fileStream.Seek(-2, SeekOrigin.End);
-
-                if (fileStream.Length>5)
+                using (FileStream fileStream = new FileStream(logFilePath, FileMode.Open))
                 {
-                    StreamSupport.WriteString("," + Environment.NewLine, fileStream);
+                    fileStream.Seek(-2, SeekOrigin.End);
+
+                    if (fileStream.Length > 5)
+                    {
+                        LogFormat.WriteString("," + Environment.NewLine, fileStream);
+                    }
+                    else
+                    {
+                        LogFormat.WriteString(Environment.NewLine, fileStream);
+                    }
+
+                    serializer.WriteObject(fileStream, logInfo);
+
+                    LogFormat.WriteString(Environment.NewLine + "]", fileStream);
                 }
-                else
-                {
-                    StreamSupport.WriteString(Environment.NewLine, fileStream);
-                }                
-
-                serializer.WriteObject(fileStream, logInfo);
-
-                StreamSupport.WriteString(Environment.NewLine + "]", fileStream);
-
             }
+            catch (Exception)
+            {
+                Console.WriteLine($"DumbLogger. Error, log was not written into log file : {logFilePath}");
+                throw;
+            }            
         }
-
     }
 }
 

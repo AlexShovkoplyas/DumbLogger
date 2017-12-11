@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System;
+﻿using System;
 using System.Xml.Serialization;
 using System.Xml;
 using System.IO;
@@ -12,24 +11,33 @@ namespace DumbLogger.LogWriters
     {
         public LogWriterXml(LogConfig logConfig) : base(logConfig) { }
 
-        public override void LogWrite(LogParameters logInfo)
+        internal override void LogWrite(LogParameters logInfo)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(LogParameters));
 
             var settings = new XmlWriterSettings() { OmitXmlDeclaration = true };
             var emptyNs = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
 
-            using (Stream fileStream = new FileStream(logFilePath, FileMode.Append))
+            try
             {
-                XmlWriter xmlWriter = XmlWriter.Create(fileStream, settings);
+                using (FileStream fileStream = new FileStream(logFilePath, FileMode.Open))
+                {
+                    fileStream.Seek(-"</ArrayOfLogParameters>".Length - 1, SeekOrigin.End);
 
-                serializer.Serialize(  xmlWriter, logInfo, emptyNs);
-                xmlWriter.Dispose();
+                    LogFormat.WriteString(Environment.NewLine, fileStream);
 
-                byte[] newline = Encoding.Default.GetBytes(Environment.NewLine);
-                fileStream.Write(newline, 0, newline.Length);
-                
-            }            
+                    XmlWriter xmlWriter = XmlWriter.Create(fileStream, settings);
+                    serializer.Serialize(xmlWriter, logInfo, emptyNs);
+                    xmlWriter.Dispose();
+
+                    LogFormat.WriteString(Environment.NewLine + "</ArrayOfLogParameters>", fileStream);
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"DumbLogger. Error, log was not written into log file : {logFilePath}");
+                throw;
+            }                       
         }
     }
 }

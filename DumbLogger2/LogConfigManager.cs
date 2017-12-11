@@ -4,106 +4,118 @@ using System.Xml.Serialization;
 using System.Xml;
 using DumbLogger.Configuration;
 using System.Text;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace DumbLogger
 {
-    public static class LogConfigManager
+    internal static class LogConfigManager
     {
         const string configFileName = "logConfig.xml";
 
+        private static List<LogConfig> configs = new List<LogConfig>();
+
         static LogConfigManager()
         {
-            FileInfo configFile = new FileInfo(configFileName);
-
-            if (!configFile.Exists)
-            {
-                Console.WriteLine($"Config file : {configFileName} was created");
-                configFile.Create().Dispose();
-            }
-        }       
-
-        static public void AddLogConfig(LogConfig logConfig)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(LogConfig));
-
-            var settings = new XmlWriterSettings() { OmitXmlDeclaration = true };
-            var emptyNs = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
-
-            using (Stream fileStream = new FileStream(configFileName, FileMode.Append))
-            {
-                XmlWriter xmlWriter = XmlWriter.Create(fileStream, settings);
-
-                serializer.Serialize(xmlWriter, logConfig, emptyNs);
-
-                byte[] newline = Encoding.ASCII.GetBytes(Environment.NewLine);
-                fileStream.Write(newline, 0, newline.Length);
-
-                Console.WriteLine($"New confidugation : {logConfig.LogName} was added to config file {configFileName}");
-
-                xmlWriter.Dispose();
-
-            }            
+            CreateConfigFile(); 
+            GetLogConfigsFromFile();
         }
 
-        //static public void CreateConfigFile()
-        //{
-        //    LogConfig logConfig = new LogConfig();
+        private static void CreateConfigFile()
+        {
+            FileInfo configFile;
+            FileStream fs = null;
 
-        //    FileInfo configFile = new FileInfo(configFilePath);
+            try
+            {
+                configFile = new FileInfo(configFileName);
 
-        //    if (configFile.Exists)
-        //    {
-        //        Console.WriteLine($"Error. Config file already exist");
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        using (FileStream fs = configFile.Create())
-        //        {
-        //            XmlSerializer formatter = new XmlSerializer(typeof(LogConfig));
-        //            Console.WriteLine($"Log. Config file was created");
-        //            formatter.Serialize(fs, logConfig);
-        //            Console.WriteLine($"Log. LogConfig was serialized");
-        //            Console.WriteLine($"Log. Config file was filled in");
-        //        }
-        //    }
-        //}
+                if (!configFile.Exists)
+                {
+                    fs = configFile.Create();
+                    Console.WriteLine($"DumbLogger. Config file : {configFileName} was created");
+                }                
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("DumbLogger. Error, Wrong path for file config.");
+                throw;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("DumbLogger. Error, It was not authorised to create config file.");
+                throw;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("DumbLogger. Error, Problems with creating config file.");
+                throw;
+            }
+            finally
+            {
+                fs?.Dispose();
+            }
+        }
 
-        //static public FileInfo GetConfigFile()
-        //{
-        //    FileInfo configFile = new FileInfo(configFileName);
+        private static void GetLogConfigsFromFile()
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(configFileName, FileMode.Open))
+                {
+                    if (fs.Length>0)
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(List<LogConfig>));
+                        configs = (List<LogConfig>)serializer.Deserialize(fs);
+                        Console.WriteLine("DumbLogger. Config file was read");
+                    }                    
+                };
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("DumbLogger. Error, It was not possible to read data from config file");
+                throw;
+            }
+        }
 
-        //    if (!configFile.Exists)
-        //    {
-        //        Console.WriteLine($"Config file was created");
-        //        configFile.Create();
-        //    }
+        public static bool Contains(string name)
+        {
+            return configs.Select(x => x.LogName).Contains(name);
+        }        
 
-        //    return configFile;
-        //}
+        public static LogConfig GetLogConfig(string name)
+        {
+            return configs.Where(c => c.LogName == name).First();
+        }
 
-        //static public LogConfig ReadConfigFile()
-        //{
-        //    FileInfo configFile = new FileInfo(configFilePath);
+        public static LogConfig AddLogConfig(LogConfig logConfig)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(List<LogConfig>));
 
-        //    if (configFile.Exists)
-        //    {
-        //        using (FileStream fs = configFile.Open(FileMode.Open))
-        //        {
-        //            LogConfig logConfig;
-        //            XmlSerializer formatter = new XmlSerializer(typeof(LogConfig));
-        //            logConfig = (LogConfig)formatter.Deserialize(fs);
-        //            Console.WriteLine($"Log. Config file was deserialised");
+            configs.Add(logConfig);
 
-        //            return logConfig;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine($"Error. Config file don't exist");
-        //        return null;
-        //    }
-        //}
+            try
+            {
+                using (Stream fileStream = new FileStream(configFileName, FileMode.Open))
+                {
+                    serializer.Serialize(fileStream, configs);
 
+                    Console.WriteLine($"DumbLogger. New log configuration : {logConfig.LogName} was added to config file {configFileName}");
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("DumbLogger. Error, It was not possible to update log configuration file");
+                throw;
+            }
+
+            return logConfig;                      
+        }
+
+        public static LogConfig AddLogConfig(string name)
+        {
+            LogConfig logConfigDefault = new LogConfig(name);
+            return AddLogConfig(logConfigDefault);
+        }
     }
 }

@@ -7,11 +7,11 @@ using DumbLogger.Configuration;
 
 namespace DumbLogger.LogWriters
 {
-    public class LogWriterPlain : LogWriter
+    internal class LogWriterPlain : LogWriter
     {
-        public LogWriterPlain(LogConfig logConfig) : base(logConfig) { }        
+        public LogWriterPlain(LogConfig logConfig) : base(logConfig) { }
 
-        public override void LogWrite(LogParameters logInfo)
+        internal override void LogWrite(LogParameters logInfo)
         {
             throw new System.NotImplementedException();
         }

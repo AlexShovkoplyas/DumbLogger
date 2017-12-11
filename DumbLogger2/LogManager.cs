@@ -4,66 +4,89 @@ using DumbLogger.Configuration;
 using DumbLogger.LogWriters;
 using System.IO;
 using System.Text;
+using System.Linq;
 
 namespace DumbLogger
 {
     /// <remarks>Class which creates logger instances, configure them, and manage all created loggers.</remarks>
-    public class LogManager
+    public static class LogManager
     {
-        private static Dictionary<string, LogWriter> activeLoggers = new Dictionary<string, LogWriter>();
+        private static Dictionary<string,LogWriter> activeLoggers = new Dictionary<string, LogWriter>();
 
-        public static LogWriter GetLogger(string name, bool clearLogFile = true)
+        static LogManager() { }
+
+        public static LogWriter GetLogger(string name)
         {
-            if (activeLoggers.ContainsKey(name))
+            LogWriter logger = null;
+
+            try
             {
-                Console.WriteLine($"Logger with requested name : {name} already was created. You can log in the same log file.");
-                return activeLoggers[name];
+                if (activeLoggers.ContainsKey(name))
+                {
+                    Console.WriteLine($"DumbLogger. Logger with requested name : {name} was already created. You can log in the same log file.");
+                    return activeLoggers[name];
+                }
+
+                LogConfig logConfig = null;
+                if (LogConfigManager.Contains(name))
+                {
+                    Console.WriteLine($"DumbLogger. Logger with requested name : {name} was already set up in config file.");
+                    logConfig = LogConfigManager.GetLogConfig(name);
+                }
+                else
+                {
+                    logConfig = LogConfigManager.AddLogConfig(name);
+                }                              
+
+                logger = CreateLogger(logConfig);
             }
-
-            LogConfig logConfigDefault = new LogConfig(name);
-
-            LogConfigManager.AddLogConfig(logConfigDefault);
-
-            LogWriter logger;
-
-            switch (logConfigDefault.LogFormat)
+            catch (Exception e)
             {
-                case LogFormatEnum.Txt:
-                    logger = new LogWriterPlain(logConfigDefault);
-                    break;
-                case LogFormatEnum.Xml:
-                    logger = new LogWriterXml(logConfigDefault);
-                    break;
-                case LogFormatEnum.Json:
-                    logger = new LogWriterJson(logConfigDefault);
-                    break;
-                default:
-                    throw new Exception($"Log Writer : {Enum.GetName(typeof(LogFormatEnum), logConfigDefault.LogFormat)} is not implemented");
+                Console.WriteLine($"DumbLogger. Error, Logger with the name : {name} was not created");
+                Console.WriteLine($"DumbLogger. " + e.Message);
             }
-
-            if (true)
-            {
-
-            }
-            CreateLogFile(logConfigDefault, clearLogFile);
-
-            activeLoggers.Add(name, logger);
-            Console.WriteLine($"Logger (default configuration) with the name : {name} was created and processed");
-
+                        
             return logger;
         }
 
-        public static LogWriter GetLogger(LogConfig logConfig, bool clearLogFile = true)
+        public static LogWriter GetLogger(LogConfig logConfig)
         {
-            if (activeLoggers.ContainsKey(logConfig.LogName))
+            LogWriter logger = null;
+
+            try
             {
-                Console.WriteLine($"Logger with requested name : {logConfig.LogName} already exist. You can not create a new one with the same name");
-                return null;
+                if (activeLoggers.ContainsKey(logConfig.LogName))
+                {
+                    Console.WriteLine($"DumbLogger. Logger with requested name : {logConfig.LogName} was already created. You can log in the same log file.");
+                    return activeLoggers[logConfig.LogName];
+                }
+
+                LogConfig logConfigChecked;
+                if (LogConfigManager.Contains(logConfig.LogName))
+                {
+                    Console.WriteLine($"DumbLogger. Logger with requested name : {logConfig.LogName} was already set up in config file.");
+                    logConfigChecked = LogConfigManager.GetLogConfig(logConfig.LogName);
+                }
+                else
+                {
+                    logConfigChecked = logConfig;
+                    LogConfigManager.AddLogConfig(logConfigChecked);
+                }
+
+                logger = CreateLogger(logConfigChecked);
             }
+            catch (Exception e)
+            {
+                Console.WriteLine($"DumbLogger. Error, Logger with the name : {logConfig.LogName} was not created");
+                Console.WriteLine($"DumbLogger. " + e.Message);
+            }
+            
+            return logger;
+        }
 
-            LogConfigManager.AddLogConfig(logConfig);
-
-            LogWriter logger;
+        private static LogWriter CreateLogger(LogConfig logConfig)
+        {
+            LogWriter logger = null;
 
             switch (logConfig.LogFormat)
             {
@@ -76,60 +99,81 @@ namespace DumbLogger
                 case LogFormatEnum.Json:
                     logger = new LogWriterJson(logConfig);
                     break;
+                case LogFormatEnum.Csv:
+                    logger = new LogWriterCsv(logConfig);
+                    break;
                 default:
-                    throw new Exception($"Log Writer : {Enum.GetName(typeof(LogFormatEnum), logConfig.LogFormat)} is not implemented");
+                    throw new NotImplementedLogFormat(logConfig.LogFormat);
             }
 
-            CreateLogFile(logConfig, clearLogFile);
+            CreateLogFile(logConfig);
 
             activeLoggers.Add(logConfig.LogName, logger);
+            Console.WriteLine($"DumbLogger. Logger with the name : {logConfig.LogName} was created and processed");
 
-            Console.WriteLine($"Logger (manual configuration) with the name : {logConfig.LogName} was created and processed");
             return logger;
         }
-        private static void CreateLogFile(LogConfig logConfig, bool clearLogFile)
+
+        private static void CreateLogFile(LogConfig logConfig)
         {
             string logFileFullName = logConfig.LogDirectory + @"\" + logConfig.LogFileName;
 
-            FileInfo configFile = new FileInfo(logFileFullName);
+            try
+            {
+                DirectoryInfo configDirectory = new DirectoryInfo(logConfig.LogDirectory);
 
-            if (!configFile.Exists)
-            {
-                Console.WriteLine($"Config file was created");
-                using (FileStream fileStream = configFile.Create())
+                if (!configDirectory.Exists)
                 {
-                    SetUpLogFile(fileStream, logConfig);
-                }
-            }
-            else
-            {
-                if (clearLogFile)
+                    configDirectory.Create();
+                }                
+
+                FileInfo configFile = new FileInfo(logFileFullName);
+
+                if (!configFile.Exists)
                 {
-                    Console.WriteLine("Config file already exist. I will be cleaned!!!");
-                    using (FileStream fileStream = configFile.Open(FileMode.Open))
+                    Console.WriteLine($"DumbLogger. Config file was created");
+                    using (FileStream fileStream = configFile.Create())
                     {
-                        fileStream.SetLength(0);
                         SetUpLogFile(fileStream, logConfig);
                     }
-                }                
+                }
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("DumbLogger. Error, Wrong path for log file.");
+                throw;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("DumbLogger. Error, It was not authorised to create log file.");
+                throw;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("DumbLogger. Error, Problems with creating log file.");
+                throw;
             }
         }
 
         private static void SetUpLogFile(FileStream fileStream, LogConfig logConfig)
         {
             string initialString = "";
-            //byte[] initialByteArray = null;
-            //UnicodeEncoding uniEncoding = new UnicodeEncoding();
 
             switch (logConfig.LogFormat)
             {
                 case LogFormatEnum.Txt:
                     break;
                 case LogFormatEnum.Xml:
+                    initialString = @"<?xml version=""1.0""?>" + 
+                        Environment.NewLine +
+                        @"<ArrayOfLogParameters xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">" + 
+                        Environment.NewLine +
+                        @"</ArrayOfLogParameters>";
                     break;
                 case LogFormatEnum.Json:
                     initialString = "[" + Environment.NewLine + "]";
-                    //initialByteArray = Encoding.ASCII.GetBytes(initialString);
+                    break;
+                case LogFormatEnum.Csv:
                     break;
                 default:
                     break;

@@ -1,9 +1,5 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace DumbLogger.Configuration
@@ -14,23 +10,35 @@ namespace DumbLogger.Configuration
     {
         public LogConfig() { }
 
-        public LogConfig(string logName)
-        {
-            LogName = logName;
-            LogDirectory = Directory.GetCurrentDirectory();
-            LogLevel = LogLevelEnum.Debug;
-            LogFormat = LogFormatEnum.Xml;
-            LogFileName = logName + "." + Enum.GetName(typeof(LogFormatEnum), LogFormat);
-        }
+        //public LogConfig(string logName)
+        //{
+        //    LogName = logName;
+        //    LogDirectory = Directory.GetCurrentDirectory() + @"\Logs";
+        //    LogLevel = LogLevelEnum.Debug;
+        //    LogFormat = LogFormatEnum.Xml;
+        //    LogFileName = logName + "." + Enum.GetName(typeof(LogFormatEnum), LogFormat);
+        //}
 
         public LogConfig(string logName, string logDirectory = "", LogLevelEnum? logLevel = null, LogFormatEnum? logFormat = null, string logFileName = "")
         {
             LogName = logName;
-            LogDirectory = logDirectory == "" ? Directory.GetCurrentDirectory() : logDirectory;
-            LogLevel = logLevel.GetValueOrDefault(LogLevelEnum.Debug);
-            LogFormat = logFormat.GetValueOrDefault(LogFormatEnum.Xml); ;
+            LogDirectory = logDirectory == "" ? _logDirectoryDefault : logDirectory;
+            LogLevel = logLevel==null ? _logLevelDefault : logLevel.GetValueOrDefault(LogLevelEnum.Debug);
+            LogFormat = logFormat==null ? _logFormatDefault : logFormat.GetValueOrDefault(LogFormatEnum.Xml);
             LogFileName = logFileName == "" ? logName + "." + Enum.GetName(typeof(LogFormatEnum), LogFormat) : logFileName;
         }
+
+        public static void SetDefaultValues(string logDirectory = "", LogLevelEnum? logLevel = null, LogFormatEnum? logFormat = null)
+        {
+            _logDirectoryDefault= logDirectory == "" ? Directory.GetCurrentDirectory() + @"\Logs" : logDirectory;
+            _logLevelDefault= logLevel.GetValueOrDefault(LogLevelEnum.Debug);
+            _logFormatDefault= logFormat.GetValueOrDefault(LogFormatEnum.Xml);
+        }
+
+        private static string _logDirectoryDefault;
+        private static LogLevelEnum _logLevelDefault;
+        private static LogFormatEnum _logFormatDefault;
+
 
         [XmlAttribute]
         public string LogName { get; set; }

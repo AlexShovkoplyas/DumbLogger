@@ -41,19 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Configuration\LogLevelEnum.cs" />
     <Compile Include="LogConfigManager.cs" />
-    <Compile Include="Configuration\Enums.cs" />
+    <Compile Include="Configuration\LogFormatEnum.cs" />
     <Compile Include="Configuration\LogConfig.cs" />
-    <Compile Include="LogReader.cs" />
+    <Compile Include="LogReaders\LogReader.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="LogParameters.cs" />
+    <Compile Include="LogWriters\LogWriterCsv.cs" />
     <Compile Include="LogWriters\LogWriterXml.cs" />
     <Compile Include="LogWriters\LogWriterJson.cs" />
     <Compile Include="LogWriters\LogWriterPlain.cs" />
-    <Compile Include="LogWriters\StreamSupport.cs" />
+    <Compile Include="LogWriters\LogFormat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializers\CsvSerializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

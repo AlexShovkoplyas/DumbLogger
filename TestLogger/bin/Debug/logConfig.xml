@@ -1,19 +1,21 @@
-﻿<LogConfig />
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger2"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Xml</LogFormat><LogFileName>ManualLogger2.Xml</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
-<LogConfig LogName="ManualLogger"><LogDirectory>C:\Users\Alex\Source\Repos\DumbLogger\TestLogger\bin\Debug</LogDirectory><LogLevel>Debug</LogLevel><LogFormat>Json</LogFormat><LogFileName>ManualLogger.Json</LogFileName></LogConfig>
+<?xml version="1.0"?>
+<ArrayOfLogConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LogConfig LogName="LoggerName">
+    <LogDirectory>D:\</LogDirectory>
+    <LogLevel>Fatal</LogLevel>
+    <LogFormat>Csv</LogFormat>
+    <LogFileName>LoggerName.Csv</LogFileName>
+  </LogConfig>
+  <LogConfig LogName="ManualLogger">
+    <LogDirectory>D:\</LogDirectory>
+    <LogLevel>Error</LogLevel>
+    <LogFormat>Csv</LogFormat>
+    <LogFileName>MyFirstLogger.csv</LogFileName>
+  </LogConfig>
+  <LogConfig LogName="WrongLogger">
+    <LogDirectory>DDD:\</LogDirectory>
+    <LogLevel>Fatal</LogLevel>
+    <LogFormat>Json</LogFormat>
+    <LogFileName>WrongLogger.Json</LogFileName>
+  </LogConfig>
+</ArrayOfLogConfig>
