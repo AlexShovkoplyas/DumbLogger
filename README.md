@@ -24,19 +24,38 @@ ClassName | Description
 --------- | -----------
 `LogConfig` | Specify configuration settings 
 `LogLevelEnum` | Variants of log inportance : Debug, Error, Fatal
-`LogFormatEnum` | Variants of log file : Txt,  Xml, Json
+`LogFormatEnum` | Variants of log file : Csv,  Xml, Json
 
 `DumbLogger.LogWriters`
 Contain classes that are inherited from class `LogWriter` and provide realisation of logging in different file format.
 
 ClassName | Description
 --------- | -----------
-`LogWriterPlain` | Provide functionality for file format `txt` 
+`LogWriterCsv` | Provide functionality for file format `csv` 
 `LogParametersXml` | Provide functionality for file format `xml` 
 `LogManagerJson` | Provide functionality for file format `json` 
 
+`DumbLogger.Serializers`
+Contain classes that implement interface `ITextSerializer` for object serialization.
+
+ClassName | Description
+--------- | -----------
+`CsvSerializer` | Provide methods Serialize and Deserialize for format `csv` 
+
+`DumbLogger.LogReaders`
+Contain static class for reading log file.
+
+ClassName | Description
+--------- | -----------
+`LogReader` | Static class for reading log files from all formats
+
+
+
 ## Set up project : 
-Copy .dll  
+Copy DumbLogger2.dll to Debug folder.
+Use namespaces `DumbLogger`, `DumbLogger.Configuration`
+
+Logging configuration is stored in file `logConfig.xml`. It can be created and populated programmatically or manually modifying config file.
 
 ## How to start :
 
@@ -44,6 +63,7 @@ You can create logger in 2 different ways : with default configuration or with m
 ```
 using DumbLogger;
 
+//Logger with default configuration
 LogWriter DefaultLogger = LogManager.GetLogger("LoggerName");
 ```
 
@@ -51,34 +71,46 @@ LogWriter DefaultLogger = LogManager.GetLogger("LoggerName");
 using DumbLogger;
 using DumbLogger.Configuration;
 
-LogConfig logConfig = new LogConfig()
-{
-    LogName="ManualLogger",
-    LogDirectory= @"D:\Logger",
-    LogFormat = LogFormatEnum.Txt,
-    LogLevel = LogLevelEnum.Error,
-    logFileName = "MyFirstLogger.txt"
-}
+//Logger with custon configuration
+LogConfig logConfig = new LogConfig(
+    logName : "ManualLogger",
+    logFormat: LogFormatEnum.Csv,
+    logLevel: LogLevelEnum.Error,
+    logFileName: "MyFirstLogger.csv"
+);
 LogWriter manualLogger = LogManager.GetLogger(logConfig);
 ```
+For loggers with default configuration it is possible to set up default settings:
+```
+LogConfig.SetDefaultValues(logDirectory: @"D:\",logFormat: LogFormatEnum.Csv, logLevel: LogLevelEnum.Fatal);
+```
+Available formats for logging: XML, JSON, CSV.
+```
+LogFormatEnum.Csv
+LogFormatEnum.Json
+LogFormatEnum.Xml
+```
+
 3 variants of log messages are available: 
 
 ```
-manualLogger.Debug("Log message");
+manualLogger.Debug("Log message Debug");
+```
+
+```
+manualLogger.Error("Log message Error");
 ```
 
 ```
 catch (Exception e)
 {
-    manualLogger.Fatal("Log message", e);
+    manualLogger.Fatal("Log message Fatal", e);
 }
 ```
 
+To read log file use method `ReadLogFile()` (data from log file will be written into Console)
+```
+manualLogger.ReadLogFile();
+```
 
-Functionality
-- Config File
 
-- [x] @mentions, #refs, [links](), **formatting**, and <del>tags</del> supported
-- [x] list syntax required (any unordered or ordered list supported)
-- [x] this is a complete item
-- [ ] this is an incomplete item
