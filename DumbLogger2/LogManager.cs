@@ -114,6 +114,7 @@ namespace DumbLogger
             return logger;
         }
 
+
         private static void CreateLogFile(LogConfig logConfig)
         {
             string logFileFullName = logConfig.LogDirectory + @"\" + logConfig.LogFileName;
@@ -134,6 +135,15 @@ namespace DumbLogger
                     Console.WriteLine($"DumbLogger. Config file was created");
                     using (FileStream fileStream = configFile.Create())
                     {
+                        SetUpLogFile(fileStream, logConfig);
+                    }
+                }
+                else
+                {                    
+                    using (FileStream fileStream = configFile.Open(FileMode.Open))
+                    {
+                        fileStream.SetLength(0);
+                        Console.WriteLine($"DumbLogger. Config file was cleaned up");
                         SetUpLogFile(fileStream, logConfig);
                     }
                 }

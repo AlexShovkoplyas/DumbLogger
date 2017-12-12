@@ -111,7 +111,17 @@ namespace DumbLogger.LogReaders
             Console.WriteLine($"Logs from logger <{Config.LogName}>, file path : {logFilePath}");
             foreach (var param in logData)
             {
-                Console.WriteLine($"{param.LogLevel}| message = {param.Message}");
+                Console.WriteLine($"{param.LogLevel} | message = {param.Message} | time = {param.TimeStamp}");
+
+                //if (param.Error==null)
+                //{
+                //    Console.WriteLine($"{param.LogLevel} | message = {param.Message}");
+                //}
+                //else
+                //{
+                //    Console.WriteLine($"{param.LogLevel} | message = {param.Message} | Error msg = {param.Error}");
+                //}
+                
             }
         }
     }
