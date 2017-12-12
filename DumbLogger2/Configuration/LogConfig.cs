@@ -18,6 +18,12 @@ namespace DumbLogger.Configuration
         //    LogFormat = LogFormatEnum.Xml;
         //    LogFileName = logName + "." + Enum.GetName(typeof(LogFormatEnum), LogFormat);
         //}
+        static LogConfig()
+        {
+            _logDirectoryDefault = Directory.GetCurrentDirectory() + @"\Logs" ;
+            _logLevelDefault = LogLevelEnum.Debug;
+            _logFormatDefault = LogFormatEnum.Xml;
+        }
 
         public LogConfig(string logName, string logDirectory = "", LogLevelEnum? logLevel = null, LogFormatEnum? logFormat = null, string logFileName = "")
         {
@@ -30,9 +36,9 @@ namespace DumbLogger.Configuration
 
         public static void SetDefaultValues(string logDirectory = "", LogLevelEnum? logLevel = null, LogFormatEnum? logFormat = null)
         {
-            _logDirectoryDefault= logDirectory == "" ? Directory.GetCurrentDirectory() + @"\Logs" : logDirectory;
-            _logLevelDefault= logLevel.GetValueOrDefault(LogLevelEnum.Debug);
-            _logFormatDefault= logFormat.GetValueOrDefault(LogFormatEnum.Xml);
+            if (logDirectory != "") _logDirectoryDefault = logDirectory;
+            if (logLevel.HasValue) _logLevelDefault = logLevel.GetValueOrDefault(LogLevelEnum.Debug);
+            if (logFormat.HasValue) _logFormatDefault = logFormat.GetValueOrDefault(LogFormatEnum.Xml);
         }
 
         private static string _logDirectoryDefault;
